@@ -127,15 +127,15 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
     }
     ```
 ### react
-    - 首先安装react：
+  - 首先安装react：
     ```
     npm i react react-dom -D
     ```
-    - 接下来添加[@babel/preset-react](https://babel.docschina.org/docs/en/babel-preset-react#docsNav)，它是用于编译react的jsx。
+  - 接下来添加[@babel/preset-react](https://babel.docschina.org/docs/en/babel-preset-react#docsNav)，它是用于编译react的jsx。
     ```
     npm i @babel/preset-react -D
     ```
-    - 然后在`.babelrc`中配置预设：
+  - 然后在`.babelrc`中配置预设：
     ```
     {
     "presets": [
@@ -144,7 +144,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         ]
     }
     ```
-    - 使用`babel-loader`来读取`.jsx`文件，在配置文件中配置如下：
+  - 使用`babel-loader`来读取`.jsx`文件，在配置文件中配置如下：
     ```
     module.exports = {
         module: {
@@ -160,7 +160,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         }
     }
     ```
-    - 最后进行验证，在`.src/App.js`中添加些react代码:
+  - 最后进行验证，在`.src/App.js`中添加些react代码:
     ```
     import React from 'react';
     import ReactDOM from 'react-dom';
@@ -180,12 +180,12 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
     ```
     最后运行`npm run dev`打包，看看是否成功。
 ### 处理HTML插件
-    webpack需要两个组件来处理HTML：html-webpack-plugin 和 html-loader。使用html-webpack-plugin可以将生成的js自动引入到html页面，不用手动添加，html-loader会把html文件输出成字符串。
-    ```
-    npm i html-webpack-plugin html-loader -D
-    ```
-    接下来更新`webpack.config.js`配置文件：
-    ```
+  webpack需要两个组件来处理HTML：html-webpack-plugin 和 html-loader。使用html-webpack-plugin可以将生成的js自动引入到html页面，不用手动添加，html-loader会把html文件输出成字符串。
+  ```
+  npm i html-webpack-plugin html-loader -D
+  ```
+  接下来更新`webpack.config.js`配置文件：
+  ```
     const HtmlWebPackPlugin = require('html-webpack-plugin');
     module.exports = {
         module: {
@@ -215,9 +215,9 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
             })
         ]
     }
-    ```
+  ```
     接下来在`./src/index.html`文件中创建一个HTML文件：
-    ```
+  ```
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -229,27 +229,27 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         </div>
     </body>
     </html>
-    ```
+  ```
     运行构建：
-    ```
+  ```
     npm run build
-    ```
-    此时在`./dist`目录下已经生成了一个HTML文件，没有必要在HTML文件中引入JS，bundle（包）会自动注入。在浏览器打开这个HTML文件，发现React组件可以正常工作。
+  ```
+  此时在`./dist`目录下已经生成了一个HTML文件，没有必要在HTML文件中引入JS，bundle（包）会自动注入。在浏览器打开这个HTML文件，发现React组件可以正常工作。
 ### 抽离CSS
-    我们知道，要使得CSS样式能够在打包后生效，至少需要用到`style-loader`和`css-loader`两个loaders，`style-loader`的作用就是通过自动注入`<style>`标签将css添加到`<head>`中。webpack打包时也会默认把样式文件打包到`bundle.js`中（css和js在同一个文件），这样如果样式足够多，就会使得打包后的js文件体积变大，阻碍页面的加载速度，可能会引起页面样式的错乱，尤其是在js没有完全加载出来的情况下导致页面无法正常显示。
-    这就需要将css文件进行抽离，webpack自身不知道如何抽离css到一个文件中，这时候就需要一些插件的协助。在webpack4以前使用的是`extract-text-webpack-plugin`插件，在webpack4之后使用的是`mini-css-extract-plugin`插件。相比`extract-text-webpack-plugin`，它的优点是：异步加载；不重复编译，性能更好；更容易使用；只针对CSS。
-    ```
+  我们知道，要使得CSS样式能够在打包后生效，至少需要用到`style-loader`和`css-loader`两个loaders，`style-loader`的作用就是通过自动注入`<style>`标签将css添加到`<head>`中。webpack打包时也会默认把样式文件打包到`bundle.js`中（css和js在同一个文件），这样如果样式足够多，就会使得打包后的js文件体积变大，阻碍页面的加载速度，可能会引起页面样式的错乱，尤其是在js没有完全加载出来的情况下导致页面无法正常显示。
+  这就需要将css文件进行抽离，webpack自身不知道如何抽离css到一个文件中，这时候就需要一些插件的协助。在webpack4以前使用的是`extract-text-webpack-plugin`插件，在webpack4之后使用的是`mini-css-extract-plugin`插件。相比`extract-text-webpack-plugin`，它的优点是：异步加载；不重复编译，性能更好；更容易使用；只针对CSS。
+  ```
     npm i mini-css-extract-plugin css-loader -D
-    ```
-    这里需要注意下：`MiniCssExtractPlugin.loader` 和 `style-loader` 不能共存，所以在loader链中不再使用`style-loader`，且目前不支持HMR（Hot Module Replacement，热更新）。
-    接下来进行验证，创建一个`./src/main.css`文件：
-    ```
+  ```
+  这里需要注意下：`MiniCssExtractPlugin.loader` 和 `style-loader` 不能共存，所以在loader链中不再使用`style-loader`，且目前不支持HMR（Hot Module Replacement，热更新）。
+  接下来进行验证，创建一个`./src/main.css`文件：
+  ```
     body{
         color: red;
     }
-    ```
+  ```
     配置plugins（插件）和loader（加载器）：
-    ```
+  ```
     const HtmlWebPackPlugin = require('html-webpack-plugin');
     const MiniCssExtractPlugin = require('mini-css-extract-plugin');
     module.exports = {
@@ -288,10 +288,10 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
             })
         ]
     }
-    ```
-    再次运行`npm run build`，你会发现在dist目录下已经生成`main.css`文件，再次在浏览器打开`./dist/index.html`文件，你会发现样式生效了！
+  ```
+  再次运行`npm run build`，你会发现在dist目录下已经生成`main.css`文件，再次在浏览器打开`./dist/index.html`文件，你会发现样式生效了！
     再次强调：因为`MiniCssExtractPlugin`不支持热更新，你可以只在生产环境中使用CSS提取，方便在开发环境下进行热重载，或者在开发环境引入 css-hot-loader，以便支持css热更新。
-    ```
+  ```
     {
         test: /\.scss$/,
         use: [
@@ -301,27 +301,27 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
             "sass-loader"
         ]
     }
-    ```
+  ```
 ### webpack-dev-server
-    虽然wepack提供了`webpack --watch`的命令来动态监听文件的改变并实时打包输出新的`bundle.js`文件。但是文件多了之后，打包速度会很慢，而且不能做到`hot replace`，每次webpack编译之后，还需要手动去刷新浏览器。
-    `webpack-dev-server`就是解决这么一个问题，它启动了一个使用express的http服务器。此外，这个http服务器和client使用了websocket通信协议，原始文件改变之后，`webpack-dev-server`都会实时的编译。所以如果配置了[webpack-dev-server](https://github.com/webpack/webpack-dev-server)，它将会在浏览器中启动你的应用程序，每次更改文件时，会自动刷新浏览器的窗口。不过需要注意，启动`webpack-dev-server`，编译后的文件并没有输出到目标文件夹中，目标文件夹中是看不到编译后的文件的，实时编译后的文件都保存到了内存当中。
-    ```
+  虽然wepack提供了`webpack --watch`的命令来动态监听文件的改变并实时打包输出新的`bundle.js`文件。但是文件多了之后，打包速度会很慢，而且不能做到`hot replace`，每次webpack编译之后，还需要手动去刷新浏览器。
+  `webpack-dev-server`就是解决这么一个问题，它启动了一个使用express的http服务器。此外，这个http服务器和client使用了websocket通信协议，原始文件改变之后，`webpack-dev-server`都会实时的编译。所以如果配置了[webpack-dev-server](https://github.com/webpack/webpack-dev-server)，它将会在浏览器中启动你的应用程序，每次更改文件时，会自动刷新浏览器的窗口。不过需要注意，启动`webpack-dev-server`，编译后的文件并没有输出到目标文件夹中，目标文件夹中是看不到编译后的文件的，实时编译后的文件都保存到了内存当中。
+  ```
     npm i webpack-dev-server -D
-    ```
+  ```
     接着在`package.json`文件中添加配置：
-    ```
+  ```
     "scripts": {
         "start": "webpack-dev-server --mode development --open"
     }
-    ```
-    然后在终端运行`npm start`，你将看到`webpack-dev-server`会在浏览器中开启你的程序。
+  ```
+  然后在终端运行`npm start`，你将看到`webpack-dev-server`会在浏览器中开启你的程序。
     到这里，项目的环境基本搭建起来了，下面再重点聊一些优化的部分。
 ## webpack打包优化
 ### 缩小编译范围
-    在实际项目开发中，为了提升开发效率，可能会使用很多第三方库，即便自己写的代码，模块间相互引用，为了方便也会使用相对路劲，或者别名(alias)；这中间如果能使得 Webpack 更快寻找到目标，将对打包速度产生很是积极的影响。
-    为了缩小编译范围，减小不必要的编译工作，首先我们可以将modules、mainFields、noParse、alias、includes、exclude等配置起来。
-    Webpack的resolve.modules配置模块库（即 node_modules）所在的位置，在 js 里出现 import 'vue' 这样不是相对、也不是绝对路径的写法时，会去 node_modules 目录下找。但是默认的配置，会采用向上递归搜索的方式去寻找，但通常项目目录里只有一个 node_modules，且是在项目根目录，为了减少搜索范围，可以直接写明 node_modules 的全路径；同样，对于别名(alias)的配置也是一样。
-    ```
+  在实际项目开发中，为了提升开发效率，可能会使用很多第三方库，即便自己写的代码，模块间相互引用，为了方便也会使用相对路劲，或者别名(alias)；这中间如果能使得 Webpack 更快寻找到目标，将对打包速度产生很是积极的影响。
+  为了缩小编译范围，减小不必要的编译工作，首先我们可以将modules、mainFields、noParse、alias、includes、exclude等配置起来。
+  Webpack的resolve.modules配置模块库（即 node_modules）所在的位置，在 js 里出现 import 'vue' 这样不是相对、也不是绝对路径的写法时，会去 node_modules 目录下找。但是默认的配置，会采用向上递归搜索的方式去寻找，但通常项目目录里只有一个 node_modules，且是在项目根目录，为了减少搜索范围，可以直接写明 node_modules 的全路径；同样，对于别名(alias)的配置也是一样。
+  ```
     resolve: {
         modules: [
             resolve('src'),
@@ -344,86 +344,87 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
             }
         ]
     }
-    ```
+  ```
 ### optimization
-    webpack4之后一些默认插件由`optimization`配置替代：
-        * `CommonsChunkPlugin`废弃，由`optimization.splitChunks`（拆分代码）和`optimization.runtimeChunk`（提取runtime代码）替代。原来的`CommonsChunkPlugin`产出模块时，会包含重复的代码，无法优化异步模块，并且minchunks的配置也较复杂。
-        * `NoEmitOnErrorsPlugin`弃用，由`noEmitOnErrors`替代。在编译出现错误时，使用 `noEmitOnErrors` 来跳过输出阶段。这样可以确保输出资源不会包含错误。生产环境默认开启。
-        * `NamedModulesPlugin`弃用，由 `optimization.namedModules` 替代，生产环境默认开启。
-        * `ModuleConcatenationPlugin`弃用，由 `optimization.concatenateModules` 替代，生产环境默认开启。
-        * `optimize.UglifyJsPlugin`弃用，由 `optimization.minimize` 替代，生产环境默认开启。
-        这里先来讲一下CSS和JS在`optimization.minimizer`中的优化配置。
-    - minimizer
-        * CSS
-        production环境下，需要将代码进行压缩。webpack5可能会内置CSS压缩器，webpack4目前还需要手动压缩，可以使用`optimize-css-assets-webpack-plugin`，设置`optimization.minimizer`来覆盖默认配置。这款插件主要用来优化CSS文件的输出，其优化策略主要包括：摒弃重复样式、去除样式规则中多余的参数、移除不需要的浏览器前缀等等。
-        ```
+  webpack4之后一些默认插件由`optimization`配置替代：
+  * `CommonsChunkPlugin`废弃，由`optimization.splitChunks`（拆分代码）和`optimization.runtimeChunk`（提取runtime代码）替代。原来的`CommonsChunkPlugin`产出模块时，会包含重复的代码，无法优化异步模块，并且minchunks的配置也较复杂。
+  * `NoEmitOnErrorsPlugin`弃用，由`noEmitOnErrors`替代。在编译出现错误时，使用 `noEmitOnErrors` 来跳过输出阶段。这样可以确保输出资源不会包含错误。生产环境默认开启。
+  * `NamedModulesPlugin`弃用，由 `optimization.namedModules` 替代，生产环境默认开启。
+  * `ModuleConcatenationPlugin`弃用，由 `optimization.concatenateModules` 替代，生产环境默认开启。
+  * `optimize.UglifyJsPlugin`弃用，由 `optimization.minimize` 替代，生产环境默认开启。
+
+  这里先来讲一下CSS和JS在`optimization.minimizer`中的优化配置。
+  - minimizer
+    * CSS
+    production环境下，需要将代码进行压缩。webpack5可能会内置CSS压缩器，webpack4目前还需要手动压缩，可以使用`optimize-css-assets-webpack-plugin`，设置`optimization.minimizer`来覆盖默认配置。这款插件主要用来优化CSS文件的输出，其优化策略主要包括：摒弃重复样式、去除样式规则中多余的参数、移除不需要的浏览器前缀等等。
+    ```
         // 优化CSS
-            new OptimizeCssAssetsPlugin({
-                assetNameRegExp: /\.css$/g,
-                cssProcessorOptions: {
-                    safe: true,
-                    autoprefixer: { disable: true },
-                    mergeLonghand: false,
-                    discardComments: {
-                        removeAll: true
-                    },
-                    canPrint: true
-                }
-            }),
-        ```
-        * JS
-            目前，最成熟的JS代码压缩工具是[UglifyJS](https://github.com/mishoo/UglifyJS2)，它会分析JavaScript代码语法树，理解代码含义，从而能做到去除无效代码、日志输出代码、压缩变量名等优化。
-            要在webpack中接入UglifyJS需要通过插件的形式，目前有两个比较成熟的插件：
-                1. UglifyJsPlugin
-                通过封装UglifyJS实现。虽然webpack4在生产环境下会默认为我们提供`UglifyJS`插件来压缩混淆代码，且webpack4默认也是开启并行压缩的模式，但这不一定能满足我们的需求。我们可以自定义JS优化配置，来覆盖默认的配置。
-                ```
-                // 自定义JS优化配置，覆盖默认配置
-                new UglifyJsPlugin({
-                    exclude: /\.min\.js$/, // 过滤掉以“.min.js”结尾的文件，因为可以认为这就是压缩好的代码
-                    cache: true,
-                    parallel: true, // 开启并行压缩
-                    sourceMap: false,
-                    extractComments: false, // 移除注释
-                    uglifyOptions: {
-                        compress: {
-                            unused: true,
-                            warnings: false,
-                            drop_debugger: true
-                        },
-                        output: {
-                            comments: false
-                        }
-                    }
-                }),
-                ```
-                2. ParallelUglifyPlugin
-                导致编译速度较慢的阶段主要为：babel等 loaders 解析阶段；js 压缩阶段。js 压缩是发布编译的最后阶段，压缩JS代码需要先把代码解析成用Object抽象表示的AST语法树，再去应用各种规则分析和处理AST，导致这个过程耗时非常大。`ParallelUglifyPlugin`通过多进程并行处理，把对多个文件的压缩工作分别给多个子进程去完成，每个子进程还是通过`UglifyJS`去一个个压缩并且输出，子进程处理完后再把结果发送给主进程，从而实现并发编译，进而大幅提升js压缩速度。
-                安装：
-                ```
-                npm i -D webpack-parallel-uglify-plugin
-                ```
-                替换自带的`UglifyJsPlugin`配置：
-                ```
-                new ParallelUglifyPlugin({
-                    cacheDir: '.cache/',
-                    uglifyJS: { // 传递给uglifyJS的参数
-                        output: {
-                            comments: false,
-                            beautify: false
-                        },
-                        compress: {
-                            warnings: false,
-                            drop_console: true,
-                            collapse_vars: true,
-                            reduce_vars: true
-                        }
-                    }
-                })
-                ```
+        new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.css$/g,
+            cssProcessorOptions: {
+                safe: true,
+                autoprefixer: { disable: true },
+                mergeLonghand: false,
+                discardComments: {
+                    removeAll: true
+                },
+                canPrint: true
+            }
+        }),
+    ```
+    * JS
+    目前，最成熟的JS代码压缩工具是[UglifyJS](https://github.com/mishoo/UglifyJS2)，它会分析JavaScript代码语法树，理解代码含义，从而能做到去除无效代码、日志输出代码、压缩变量名等优化。
+    要在webpack中接入UglifyJS需要通过插件的形式，目前有两个比较成熟的插件：
+    1. UglifyJsPlugin
+    通过封装UglifyJS实现。虽然webpack4在生产环境下会默认为我们提供`UglifyJS`插件来压缩混淆代码，且webpack4默认也是开启并行压缩的模式，但这不一定能满足我们的需求。我们可以自定义JS优化配置，来覆盖默认的配置。
+    ```
+    // 自定义JS优化配置，覆盖默认配置
+    new UglifyJsPlugin({
+        exclude: /\.min\.js$/, // 过滤掉以“.min.js”结尾的文件，因为可以认为这就是压缩好的代码
+        cache: true,
+        parallel: true, // 开启并行压缩
+        sourceMap: false,
+        extractComments: false, // 移除注释
+        uglifyOptions: {
+            compress: {
+                unused: true,
+                warnings: false,
+                drop_debugger: true
+            },
+            output: {
+                comments: false
+            }
+        }
+    }),
+    ```
+    2. ParallelUglifyPlugin
+    导致编译速度较慢的阶段主要为：babel等 loaders 解析阶段；js 压缩阶段。js 压缩是发布编译的最后阶段，压缩JS代码需要先把代码解析成用Object抽象表示的AST语法树，再去应用各种规则分析和处理AST，导致这个过程耗时非常大。`ParallelUglifyPlugin`通过多进程并行处理，把对多个文件的压缩工作分别给多个子进程去完成，每个子进程还是通过`UglifyJS`去一个个压缩并且输出，子进程处理完后再把结果发送给主进程，从而实现并发编译，进而大幅提升js压缩速度。
+    安装：
+    ```
+    npm i -D webpack-parallel-uglify-plugin
+    ```
+    替换自带的`UglifyJsPlugin`配置：
+    ```
+    new ParallelUglifyPlugin({
+        cacheDir: '.cache/',
+        uglifyJS: { // 传递给uglifyJS的参数
+            output: {
+                comments: false,
+                beautify: false
+            },
+            compress: {
+                warnings: false,
+                drop_console: true,
+                collapse_vars: true,
+                reduce_vars: true
+            }
+        }
+    })
+    ```
     - runtimeChunk
-        分离出webpack编译运行时的代码，好处是方便做文件的持久化缓存。[runtimeChunk](https://webpack.js.org/configuration/optimization/#optimization-runtimechunk)可以设置多种类型，其中，single即将所有chunk的运行代码打包到一个文件中，multiple就是给每一个chunk的运行代码打包一个文件。
-        可以配合InlineManifestWebpackPlugin插件将运行代码直接插入html文件中，这样做可以避免一次请求的开销。
-        ```
+    分离出webpack编译运行时的代码，好处是方便做文件的持久化缓存。[runtimeChunk](https://webpack.js.org/configuration/optimization/#optimization-runtimechunk)可以设置多种类型，其中，single即将所有chunk的运行代码打包到一个文件中，multiple就是给每一个chunk的运行代码打包一个文件。
+    可以配合InlineManifestWebpackPlugin插件将运行代码直接插入html文件中，这样做可以避免一次请求的开销。
+    ```
         optimization: {
             runtimeChunk: 'single'
         },
@@ -439,8 +440,8 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
             }),
             new InlineManifestWebpackPlugin('runtime')
         ]
-        ```
-        和老版本不同的是，我们并不需要在html模版中添加`<%= htmlWebpackPlugin.files.webpackManifest %>`，只需将runtime加入chunks即可。这里有一个点要注意，InlineManifestWebpackPlugin插件的顺序一定要在HtmlWebpackPlugin之后，否则会导致编译失败。
+    ```
+    和老版本不同的是，我们并不需要在html模版中添加`<%= htmlWebpackPlugin.files.webpackManifest %>`，只需将runtime加入chunks即可。这里有一个点要注意，InlineManifestWebpackPlugin插件的顺序一定要在HtmlWebpackPlugin之后，否则会导致编译失败。
     - splitChunks
     webpack4移除了CommonsChunkPlugin插件，取而代之的是splitChunks。
     首先，将`node_modules`分离出来；`common`里面是分理出共享模块，按道理来说，项目的公共代码（或者称为可复用的代码）应该是放置于同一个根目录下的，基于这点可以将src/common中的公用代码提取出来。
@@ -451,10 +452,10 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
-                    minSize: 30000, // 小于30KB的代码块不分离出来，因为小代码块还要额外消耗一次请求去加载它，成本太高
+                    minSize: 30000,
                     minChunks: 1,
                     chunks: 'initial',
-                    priority: 1 // 该配置项是设置处理的优先级，数值越大越优先处理
+                    priority: 1
                 },
                 commons: {
                     test: /[\\/]src[\\/]common[\\/]/,
@@ -463,7 +464,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
                     minChunks: 3,
                     chunks: 'initial',
                     priority: -1,
-                    reuseExistingChunk: true // 这个配置允许我们使用已经存在的代码块
+                    reuseExistingChunk: true
                 }
             }
         }
@@ -495,13 +496,13 @@ plugins: [
 通过在 loader 中配置直接指向 happypack 提供的 loader，对于文件实际匹配的处理 loader，则是通过配置在 plugin 属性来传递说明，这里 happypack 提供的 loader 与 plugin 的衔接匹配，则是通过id=happybabel来完成。
 此外，像 vue-loader、css-loader 等都支持 happyPack 加速。
 ### AutoDllPlugin
-    在实际项目中，其实我们希望修改业务功能后打包时只打包业务模块的代码，而不打包那些第三方基础库，如Vue、Vuex、React等等，这样可以快速的提高打包速度。AutoDllPlugin插件就是解决这样一个问题的，在AutoDllPlugin之前其实还有其他的方案，如CommonsChunkPlugin、DLLPlugin等来将第三方库和自己的代码分开，但都存在一定的缺陷，具体可以参考[深入浅出的webpack构建工具---AutoDllPlugin插件(八)](https://www.cnblogs.com/tugenhua0707/p/9526677.html)。
-    webpack4以上版本安装：
-    ```
+在实际项目中，其实我们希望修改业务功能后打包时只打包业务模块的代码，而不打包那些第三方基础库，如Vue、Vuex、React等等，这样可以快速的提高打包速度。AutoDllPlugin插件就是解决这样一个问题的，在AutoDllPlugin之前其实还有其他的方案，如CommonsChunkPlugin、DLLPlugin等来将第三方库和自己的代码分开，但都存在一定的缺陷，具体可以参考[深入浅出的webpack构建工具---AutoDllPlugin插件(八)](https://www.cnblogs.com/tugenhua0707/p/9526677.html)。
+webpack4以上版本安装：
+```
     npm install --save-dev autodll-webpack-plugin
-    ```
-    配置：
-    ```
+```
+配置：
+```
     const AutoDllPlugin = require('autodll-webpack-plugin');
     new AutoDllPlugin({
         inject: true,
@@ -515,14 +516,14 @@ plugins: [
             ]
         }
     })
-    ```
-    注意：这里不需要`webpack.dll.config.js`文件。
+```
+注意：这里不需要`webpack.dll.config.js`文件。
 ### webpack-bundle-analyzer
-    编译速度作为一项指标，影响的更多是开发者体验，与之相比，编译后文件大小更为重要。webpack4 编译的文件，比之前版本略小一些，为了更好的追踪文件 size 变化，开发环境和生产环境都需要引入 [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer) 插件。
-    ```
+编译速度作为一项指标，影响的更多是开发者体验，与之相比，编译后文件大小更为重要。webpack4 编译的文件，比之前版本略小一些，为了更好的追踪文件 size 变化，开发环境和生产环境都需要引入 [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer) 插件。
+```
     npm install --save-dev webpack-bundle-analyzer
-    ```
-    默认在`http://127.0.0.1:8888/`打开。
+```
+默认在`http://127.0.0.1:8888/`打开。
 ## webpack主要构建流程
 webpack就像一条生产线，要经过一系列处理流程后才能将源文件转换成输出结果。这条生产线上的每个处理流程的职责都是单一的，多个流程之间有存在依赖关系，只有完成当前处理后才能交给下一个流程去处理。 插件就像是一个插入到生产线中的一个功能，在特定的时机对生产线上的资源做处理。
 webpack 通过 Tapable 来组织这条复杂的生产线。 webpack 在运行过程中会广播事件，插件只需要监听它所关心的事件，就能加入到这条生产线中，去改变生产线的运作。
