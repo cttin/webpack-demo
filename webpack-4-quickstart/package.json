@@ -1,0 +1,45 @@
+{
+  "name": "webpack-4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development --open",
+    "dev": "webpack-dev-server --mode development --open --config config/webpack.dev.config.js",
+    "build": "webpack --mode production --config config/webpack.prd.config.js",
+    "analyz": "NODE_ENV=production npm_config_report=true npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cttin/webpack-4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cttin/webpack-4/issues"
+  },
+  "homepage": "https://github.com/cttin/webpack-4#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "autodll-webpack-plugin": "^0.4.2",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "happypack": "^5.0.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "inline-manifest-webpack-plugin": "^4.0.2",
+    "mini-css-extract-plugin": "^0.6.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "webpack": "^4.30.0",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.3.1",
+    "webpack-parallel-uglify-plugin": "^1.1.0"
+  }
+}
