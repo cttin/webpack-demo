@@ -308,7 +308,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
   ```
     npm i webpack-dev-server -D
   ```
-    接着在`package.json`文件中添加配置：
+  接着在`package.json`文件中添加配置：
   ```
     "scripts": {
         "start": "webpack-dev-server --mode development --open"
@@ -354,8 +354,8 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
   * `optimize.UglifyJsPlugin`弃用，由 `optimization.minimize` 替代，生产环境默认开启。
 
   这里先来讲一下CSS和JS在`optimization.minimizer`中的优化配置。
-  - minimizer
-    * CSS
+  - minimizer 
+    * CSS  
     production环境下，需要将代码进行压缩。webpack5可能会内置CSS压缩器，webpack4目前还需要手动压缩，可以使用`optimize-css-assets-webpack-plugin`，设置`optimization.minimizer`来覆盖默认配置。这款插件主要用来优化CSS文件的输出，其优化策略主要包括：摒弃重复样式、去除样式规则中多余的参数、移除不需要的浏览器前缀等等。
     ```
         // 优化CSS
@@ -372,10 +372,10 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
             }
         }),
     ```
-    * JS
+    * JS  
     目前，最成熟的JS代码压缩工具是[UglifyJS](https://github.com/mishoo/UglifyJS2)，它会分析JavaScript代码语法树，理解代码含义，从而能做到去除无效代码、日志输出代码、压缩变量名等优化。
     要在webpack中接入UglifyJS需要通过插件的形式，目前有两个比较成熟的插件：
-    1. UglifyJsPlugin
+    1. UglifyJsPlugin  
     通过封装UglifyJS实现。虽然webpack4在生产环境下会默认为我们提供`UglifyJS`插件来压缩混淆代码，且webpack4默认也是开启并行压缩的模式，但这不一定能满足我们的需求。我们可以自定义JS优化配置，来覆盖默认的配置。
     ```
     // 自定义JS优化配置，覆盖默认配置
@@ -397,7 +397,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         }
     }),
     ```
-    2. ParallelUglifyPlugin
+    2. ParallelUglifyPlugin  
     导致编译速度较慢的阶段主要为：babel等 loaders 解析阶段；js 压缩阶段。js 压缩是发布编译的最后阶段，压缩JS代码需要先把代码解析成用Object抽象表示的AST语法树，再去应用各种规则分析和处理AST，导致这个过程耗时非常大。`ParallelUglifyPlugin`通过多进程并行处理，把对多个文件的压缩工作分别给多个子进程去完成，每个子进程还是通过`UglifyJS`去一个个压缩并且输出，子进程处理完后再把结果发送给主进程，从而实现并发编译，进而大幅提升js压缩速度。
     安装：
     ```
@@ -421,7 +421,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         }
     })
     ```
-    - runtimeChunk
+    - runtimeChunk  
     分离出webpack编译运行时的代码，好处是方便做文件的持久化缓存。[runtimeChunk](https://webpack.js.org/configuration/optimization/#optimization-runtimechunk)可以设置多种类型，其中，single即将所有chunk的运行代码打包到一个文件中，multiple就是给每一个chunk的运行代码打包一个文件。
     可以配合InlineManifestWebpackPlugin插件将运行代码直接插入html文件中，这样做可以避免一次请求的开销。
     ```
@@ -442,7 +442,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         ]
     ```
     和老版本不同的是，我们并不需要在html模版中添加`<%= htmlWebpackPlugin.files.webpackManifest %>`，只需将runtime加入chunks即可。这里有一个点要注意，InlineManifestWebpackPlugin插件的顺序一定要在HtmlWebpackPlugin之后，否则会导致编译失败。
-    - splitChunks
+    - splitChunks  
     webpack4移除了CommonsChunkPlugin插件，取而代之的是splitChunks。
     首先，将`node_modules`分离出来；`common`里面是分理出共享模块，按道理来说，项目的公共代码（或者称为可复用的代码）应该是放置于同一个根目录下的，基于这点可以将src/common中的公用代码提取出来。
     ```
@@ -549,9 +549,9 @@ webpack 的运行流程是一个串行的过程，从启动到结束会依次执
 2. compilation 对象：当 webpack 以开发模式运行时，每当检测到文件变化，一次新的 Compilation 将被创建。一个 Compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。Compilation 对象也提供了很多事件回调供插件做扩展。
 这两对象都继承自[tapable](https://github.com/webpack/tapable)。
 
->> 参考
-[使用webpack4提升180%编译速度](http://louiszhai.github.io/2019/01/04/webpack4/)
-[细说 webpack 之流程篇](http://taobaofed.org/blog/2016/09/09/webpack-flow/)
-[从实践中寻找webpack4最优配置](https://segmentfault.com/a/1190000015032321)
+>> 参考  
+[使用webpack4提升180%编译速度](http://louiszhai.github.io/2019/01/04/webpack4/)  
+[细说 webpack 之流程篇](http://taobaofed.org/blog/2016/09/09/webpack-flow/)  
+[从实践中寻找webpack4最优配置](https://segmentfault.com/a/1190000015032321)  
 
 
