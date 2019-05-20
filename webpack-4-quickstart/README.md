@@ -54,7 +54,7 @@ export default function() {
 ### 通过mode设置development（开发）和 production（生产）模式
 在webpack中定义两种及以上的配置是很常见的事情，一个典型的项目可能就会有如下配置：
  - 用于开发环境的配置文件，首先考虑的是方便开发，方便代码调试，不需要考虑代码合并和css样式分离这些，如用于定义webpack dev server等。
- - 用于生产环境的配置文件，生产环境打包是要最后发布到服务器部署的代码，我们需要尽量保持代码简洁，加载性能最优，不需要调试辅助工具，如用于定义UglifyJSPlugin、sourcemaps等
+ - 用于生产环境的配置文件，生产环境打包是要最后发布到服务器部署的代码，我们需要尽量保持代码简洁，加载性能最优，不需要调试辅助工具，如用于定义UglifyJSPlugin、sourcemap等。  
 但在webpack中，你可以在没有一行配置的情况下完成。正如第一个WARNING所示，webpack4可以通过mode设置开发和生产环境。打开`package.json`文件，补充scripts配置：
 ```
 "scripts": {
@@ -62,8 +62,9 @@ export default function() {
   "build": "webpack --mode production"
 }
 ```
-尝试运行`npm run dev`，你会发现没有那个WARNING了！在`./dist/main.js`中看到了bundle（包）文件，并且是没有压缩的。
-再次尝试运行`npm run build`，再次打开`./dist/main.js`文件，你会看到一个压缩了的bundle（包）！在webpack4中production mode（生产模式）可以开箱即用地进行各种优化，包括：压缩、作用域提升、tree-shaking 等。另一方面，development mode(开发模式)针对速度进行了优化，仅仅提供了一种不压缩的 bundle。
+尝试运行`npm run dev`，你会发现没有那个WARNING了！在`./dist/main.js`中看到了bundle（包）文件，并且是没有压缩的。  
+再次尝试运行`npm run build`，再次打开`./dist/main.js`文件，你会看到一个压缩了的bundle（包）！  
+在webpack4中production mode（生产模式）可以开箱即用地进行各种优化，包括：压缩、作用域提升、tree-shaking 等。另一方面，development mode(开发模式)针对速度进行了优化，仅仅提供了一种不压缩的 bundle。
 或者你也可以在配置文件中加入mode属性：
 ```
 module.exports = {
@@ -216,7 +217,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         ]
     }
   ```
-    接下来在`./src/index.html`文件中创建一个HTML文件：
+  接下来在`./src/index.html`文件中创建一个HTML文件：
   ```
     <!DOCTYPE html>
     <html lang="en">
@@ -230,7 +231,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
     </body>
     </html>
   ```
-    运行构建：
+  运行构建：
   ```
     npm run build
   ```
@@ -248,7 +249,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
         color: red;
     }
   ```
-    配置plugins（插件）和loader（加载器）：
+  配置plugins（插件）和loader（加载器）：
   ```
     const HtmlWebPackPlugin = require('html-webpack-plugin');
     const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -290,7 +291,7 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
     }
   ```
   再次运行`npm run build`，你会发现在dist目录下已经生成`main.css`文件，再次在浏览器打开`./dist/index.html`文件，你会发现样式生效了！
-    再次强调：因为`MiniCssExtractPlugin`不支持热更新，你可以只在生产环境中使用CSS提取，方便在开发环境下进行热重载，或者在开发环境引入 css-hot-loader，以便支持css热更新。
+  再次强调：因为`MiniCssExtractPlugin`不支持热更新，你可以只在生产环境中使用CSS提取，方便在开发环境下进行热重载，或者在开发环境引入 css-hot-loader，以便支持css热更新。
   ```
     {
         test: /\.scss$/,
@@ -315,10 +316,10 @@ npm i @babel/core babel-loader @babel/preset-env --save-dev
     }
   ```
   然后在终端运行`npm start`，你将看到`webpack-dev-server`会在浏览器中开启你的程序。
-    到这里，项目的环境基本搭建起来了，下面再重点聊一些优化的部分。
+  到这里，项目的环境基本搭建起来了，下面再重点聊一些优化的部分。
 ## webpack打包优化
 ### 缩小编译范围
-  在实际项目开发中，为了提升开发效率，可能会使用很多第三方库，即便自己写的代码，模块间相互引用，为了方便也会使用相对路劲，或者别名(alias)；这中间如果能使得 Webpack 更快寻找到目标，将对打包速度产生很是积极的影响。
+  在实际项目开发中，为了提升开发效率，可能会使用很多第三方库，即便自己写的代码，模块间相互引用，为了方便也会使用相对路径，或者别名(alias)；这中间如果能使得 Webpack 更快寻找到目标，将对打包速度产生很是积极的影响。
   为了缩小编译范围，减小不必要的编译工作，首先我们可以将modules、mainFields、noParse、alias、includes、exclude等配置起来。
   Webpack的resolve.modules配置模块库（即 node_modules）所在的位置，在 js 里出现 import 'vue' 这样不是相对、也不是绝对路径的写法时，会去 node_modules 目录下找。但是默认的配置，会采用向上递归搜索的方式去寻找，但通常项目目录里只有一个 node_modules，且是在项目根目录，为了减少搜索范围，可以直接写明 node_modules 的全路径；同样，对于别名(alias)的配置也是一样。
   ```
@@ -539,7 +540,7 @@ webpack 的运行流程是一个串行的过程，从启动到结束会依次执
 6. 编译（normal-module-loader）：对用loader加载完成的module(是一段js代码)进行编译,用 acorn 编译,生成ast抽象语法树；
 7. 收集依赖（program）：开始对ast进行遍历，当遇到require等一些调用表达式时，触发 call require 事件的handler执行，收集依赖；
 8. 递归调用：再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理；
-9. 完成模块编译：在经过第4步使用 Loader 翻译完所有模块后，得到了每个模块被翻译后的最终内容以及它们之间的依赖关系；
+9. 完成模块编译：在经过第 4 - 8 步使用 Loader 翻译完所有模块后，得到了每个模块被翻译后的最终内容以及它们之间的依赖关系；
 10. 输出资源：根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk，再把每个 Chunk 转换成一个单独的文件加入到输出列表，这步是可以修改输出内容的最后机会，比如合并，抽取公共模块、加hash、压缩代码，插件 UglifyJsPlugin 就放在这个阶段；
 11. bootstrap： 生成启动代码；
 12. 输出完成（emit）：在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。
