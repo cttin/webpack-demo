@@ -549,6 +549,39 @@ webpack 的运行流程是一个串行的过程，从启动到结束会依次执
 1. Compile 对象：负责文件监听和启动编译。Compiler 实例中包含了完整的 webpack 配置，全局只有一个 Compiler 实例。
 2. compilation 对象：当 webpack 以开发模式运行时，每当检测到文件变化，一次新的 Compilation 将被创建。一个 Compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。Compilation 对象也提供了很多事件回调供插件做扩展。
 这两对象都继承自[tapable](https://github.com/webpack/tapable)。
+## 总结
+这里主要介绍了webpack4的一些新特性以及一些打包优化的插件。webpack性能优化主要可以从两个方面入手，一个是打包体积；一个是构建速度。这里再来进行个总结。
+### 体积
+打包后的包体积可以通过`webpack-bundle-analyzer`查看，发现有哪些比较大体积的模块，进行分析，进行优化。体积方面的优化措施有：
+* 生产环境压缩代码
+* AutoDllPlugin
+业务代码和第三方库代码独立打包。修改业务代码后，打包时只打包业务模块的代码，而不打包那些第三方基础库。
+* 外部引入cdn库
+比如项目开发中常用到的 moment, lodash等，都是挺大的存在，如果必须引入的话，即考虑外部引入之，再借助 externals 予以指定，使用 externals设置第三方依赖库，可以进行变量挂载，从而使用index.html中引入的 cdn 库，避免了打包时将复杂的第三方库打包，节省了打包资源缩减了bundle的体积，而依旧可以在代码中通过CMD、AMD或者window/global全局的方式访问。
+* 对于第三方库或者工具按需引入
+* 异步加载
+根据需要异步加载，webpack也是内置对这方面的支持； 假如，你使用的是 Vue，将一个组件（以及其所有依赖）改为异步加载，所需要的只是把：
+```
+import Foo from './Foo.vue'
+```
+改成：
+```
+const Foo = () => import('./Foo.vue')
+```
+如此分割之时，该组件所依赖的其他组件或其他模块，都会自动被分割进对应的 chunk 里，实现异步加载。
+* tree shaking
+我们常常在文件中使用具名引入（named imports），这些引入的文件里有其他导出（exports）。在某些情况下，我们并没有引入所有的导出，但Webpack仍会把整个模块都导入进来。这种情况下就需要使用tree shaking了，因为它能帮助我们去除掉用不到的代码。因此打包后的体积能显著下降。
+* code spliting
+对于一个大型项目而言，将所有代码打包进一个文件可能会导致打包后的文件非常大（虽然减少了请求次数,单个文件过大会导致阻塞）,而且有些代码只是在某些情况下是必需的，这就导致了效率低下。webpack有一个code spliting的特性，它可以将你的代码库分割成按需加载的块(chunks)。
+### 构建速度
+* 首先我们可以将modules、mainFields、noParse、alias、includes、exclude等配置起来。
+* 增强代码代码压缩工具
+使用`optimize-css-assets-webpack-plugin`压缩CSS；使用`ParallelUglifyPlugin`并发压缩编译。
+* Happypack
+* runtimeChunk
+分离出webpack编译运行时的代码，方便做文件的持久化缓存。
+* splitChunks
+将公用代码提取出来。
 
 >> 参考  
 [使用webpack4提升180%编译速度](http://louiszhai.github.io/2019/01/04/webpack4/)  
